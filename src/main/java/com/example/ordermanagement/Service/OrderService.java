@@ -18,4 +18,17 @@ public class OrderService {
     public Order getOrderById(Long id){
         return orderRepo.findById(id).orElse(null);
     }
+
+    public Order createOrder(Order order) {
+        return saveOrder(order);
+    }
+
+    public Order updateOrderStatus(Long id, String status) {
+        Order existingOrder = getOrderById(id);
+        if (existingOrder != null) {
+            existingOrder.setStatus(status);
+            return saveOrder(existingOrder);
+        }
+        return null;
+    }
 }
