@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+<body>
+    <nav th:replace="layout :: nav"></nav>
+
+    <div class="container mt-4">
+        <div class="row mb-3">
+            <div class="col">
+                <h2>Orders</h2>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Status</th>
+                        <th>Total Amount</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.userId}"></td>
+                        <td>
+                            <span th:class="${'badge ' + (order.status == 'DELIVERED' ? 'bg-success' : 
+                                            order.status == 'PENDING' ? 'bg-warning' : 'bg-secondary')}"
+                                  th:text="${order.status}">
+                            </span>
+                        </td>
+                        <td th:text="${'$' + order.totalAmount}"></td>
+                        <td th:text="${order.paymentId != null ? 'Paid' : 'Pending'}"></td>
+                        <td>
+                            <button class="btn btn-sm btn-info" th:onclick="'viewOrder(' + ${order.id} + ')'">View</button>
+                            <button class="btn btn-sm btn-warning" th:if="${order.status == 'PENDING'}"
+                                    th:onclick="'updateStatus(' + ${order.id} + ', \'DELIVERED\')'">
+                                Mark Delivered
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="order-info"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layout :: scripts"></div>
+    <script>
+        function viewOrder(id) {
+            fetch(`/api/orders/${id}`)
+                .then(response => response.json())
+                .then(order => {
+                    const modalBody = document.querySelector('#orderDetailModal .order-info');
+                    modalBody.innerHTML = `
+                        <p><strong>Order ID:</strong> ${order.id}</p>
+                        <p><strong>Status:</strong> ${order.status}</p>
+                        <p><strong>Total Amount:</strong> $${order.totalAmount}</p>
+                        <p><strong>Payment ID:</strong> ${order.paymentId || 'Pending'}</p>
+                    `;
+                    new bootstrap.Modal(document.getElementById('orderDetailModal')).show();
+                });
+        }
+
+        function updateStatus(id, status) {
+            fetch(`/api/orders/${id}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: status })
+            })
+            .then(() => {
+                location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

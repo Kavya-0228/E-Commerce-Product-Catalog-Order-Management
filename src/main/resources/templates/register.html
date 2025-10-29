@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head">
+    <style>
+        .register-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav th:replace="layout :: nav"></nav>
+
+    <div class="container">
+        <div class="register-container">
+            <h2 class="text-center mb-4">Register</h2>
+            <form id="registerForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-primary" onclick="register()">Register</button>
+                </div>
+            </form>
+            <div class="text-center mt-3">
+                <a href="/login">Already have an account? Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="layout :: scripts"></div>
+    <script>
+        function register() {
+            const form = document.getElementById('registerForm');
+            const formData = new FormData(form);
+            const user = Object.fromEntries(formData.entries());
+            
+            fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user)
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = '/login';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Registration failed. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
