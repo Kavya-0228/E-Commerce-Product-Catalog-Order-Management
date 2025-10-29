@@ -1,7 +1,6 @@
 package com.example.ordermanagement.Controller;
 import com.example.ordermanagement.Entity.User;
 import com.example.ordermanagement.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
