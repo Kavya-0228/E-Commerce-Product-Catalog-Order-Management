@@ -66,23 +66,23 @@ public class DataInitializer implements CommandLineRunner {
         // Add sample users
         if (userRepo.count() == 0) {
             User u1 = new User();
-            u1.setUsername("john_doe");
-            u1.setName("John Doe");
-            u1.setEmail("john@example.com");
+            u1.setUsername("kaviee");
+            u1.setName("Kaviee");
+            u1.setEmail("kaviee@example.com");
             u1.setRole("CUSTOMER");
             userRepo.save(u1);
             
             User u2 = new User();
-            u2.setUsername("jane_smith");
-            u2.setName("Jane Smith");
-            u2.setEmail("jane@example.com");
+            u2.setUsername("deepi");
+            u2.setName("Deepi");
+            u2.setEmail("deepi@example.com");
             u2.setRole("CUSTOMER");
             userRepo.save(u2);
             
             User u3 = new User();
-            u3.setUsername("mike_wilson");
-            u3.setName("Mike Wilson");
-            u3.setEmail("mike@example.com");
+            u3.setUsername("pavi");
+            u3.setName("Pavi");
+            u3.setEmail("pavi@example.com");
             u3.setRole("CUSTOMER");
             userRepo.save(u3);
         }
