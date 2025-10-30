@@ -33,8 +33,20 @@ public class ViewController {
         return "orders";
     }
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login";
+
+
+    @GetMapping("/payments")
+    public String paymentsPage(Model model) {
+        model.addAttribute("orders", orderRepo.findAll());
+        return "payments";
+    }
+    
+
+    
+
+
+    @GetMapping("/test")
+    public String testPage() {
+        return "test";
     }
 }
