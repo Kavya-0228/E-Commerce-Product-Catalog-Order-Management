@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout :: head">
     <style>
         .login-container {
@@ -16,25 +16,44 @@
 
     <div class="container">
         <div class="login-container">
-            <h2 class="text-center mb-4">Login</h2>
+            <div class="text-center mb-4">
+                <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
+                <h2>Login</h2>
+            </div>
             <div th:if="${param.error}" class="alert alert-danger">
-                Invalid username or password.
+                <i class="fas fa-exclamation-triangle"></i> Invalid username or password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                <i class="fas fa-check-circle"></i> You have been logged out successfully.
+            </div>
+            <div class="alert alert-info">
+                <strong>Demo Credentials:</strong><br>
+                <i class="fas fa-user-shield"></i> Admin: <code>admin / admin123</code><br>
+                <i class="fas fa-user"></i> User: <code>user / user123</code>
             </div>
             <form th:action="@{/login}" method="post">
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user"></i> Username
+                    </label>
                     <input type="text" class="form-control" id="username" name="username" required autofocus>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
                 </div>
             </form>
             <div class="text-center mt-3">
-                <a href="/register">Register new account</a>
+                <a href="/register" class="text-decoration-none">
+                    <i class="fas fa-user-plus"></i> Register new account
+                </a>
             </div>
         </div>
     </div>

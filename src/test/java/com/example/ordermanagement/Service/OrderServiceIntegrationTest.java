@@ -1,6 +1,7 @@
 package com.example.ordermanagement.Service;
 
 import com.example.ordermanagement.Entity.Order;
+import com.example.ordermanagement.Entity.User;
 import com.example.ordermanagement.Repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,20 +36,22 @@ class OrderServiceIntegrationTest {
     void createAndUpdateOrder_Success() {
         // Given
         Order order = new Order();
-        order.setUserId(1L);
+        User user = new User();
+        user.setId(1L);
+        order.setUser(user);
         order.setStatus("PENDING");
         order.setTotalAmount(299.99);
         
         Order savedOrder = new Order();
         savedOrder.setId(1L);
-        savedOrder.setUserId(1L);
+        savedOrder.setUser(user);
         savedOrder.setStatus("PENDING");
         savedOrder.setTotalAmount(299.99);
 
         when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
 
         // When
-        Order createdOrder = orderService.createOrder(order);
+        Order createdOrder = orderService.placeOrder(order);
 
         // Then
         assertNotNull(createdOrder);
